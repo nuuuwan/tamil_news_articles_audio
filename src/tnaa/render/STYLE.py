@@ -28,6 +28,10 @@ time {
 
 }
 
+ul { 
+    padding: 12px;
+}
+
 td, th {
   border: 1px solid lightgray;
   padding: 3px;
