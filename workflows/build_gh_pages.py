@@ -15,6 +15,14 @@ body {
     margin: auto;
 }
 
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color: orange;
+}
+
 audio {
     width: 300px;
 }
@@ -22,6 +30,7 @@ audio {
 .lang-en {
     color: lightgray;
 }
+
 '''
 
 
@@ -101,14 +110,15 @@ def build_index():
                         _(
                             'a',
                             [
-                                _('span', str(article.title) + ' '),
-                                _(
-                                    'span',
-                                    str(article.title_en),
-                                    {'class': 'lang-en'},
-                                ),
+                                _('span', str(article.title)),
+                                
                             ],
                             dict(href=href),
+                        ),
+                        _(
+                            'span',
+                            f' ({article.title_en})',
+                            {'class': 'lang-en'},
                         ),
                     ],
                 ),
