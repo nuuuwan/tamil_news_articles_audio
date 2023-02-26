@@ -65,8 +65,8 @@ def build_article(hash, article):
             _(
                 'tr',
                 [
-                    _('td', word),
-                    _('td', translated_word),
+                    _('td', word, {'class': 'lang-ta'}),
+                    _('td', translated_word, {'class': 'lang-en'}),
                 ],
             )
         )
