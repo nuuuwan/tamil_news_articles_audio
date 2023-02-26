@@ -43,7 +43,7 @@ class ArticlePage(BasePage):
                             _('p', x[1], {'class': 'lang-en'}),
                         ],
                     ),
-                    zip(self.article.body_lines, self.translated_lines),
+                    zip(self.article.lines, self.translated_lines),
                 )
             ),
         )
