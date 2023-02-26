@@ -48,6 +48,8 @@ class TNAArticle:
         return list(sorted(set(cleaned_words)))
 
     def save_text(self):
+        Directory(self.file_base).mkdir()
+        
         text_file = File(os.path.join(self.file_base, 'article.txt'))
         if text_file.exists:
             log.debug(f'Already exists {text_file.path}')
@@ -58,6 +60,8 @@ class TNAArticle:
         log.debug(f'Saved {text_file.path}')
 
     def save_audio(self):
+        Directory(self.file_base).mkdir()
+
         dir_audio = os.path.join(self.file_base, 'audio')
         all_path = os.path.join(dir_audio, 'article.mp3')
 
