@@ -16,6 +16,7 @@ body {
 }
 
 a {
+    color: maroon;
     text-decoration: none;
 }
 
@@ -50,12 +51,17 @@ def build_article(hash, article):
     div_article = _(
         'div',
         [
+            _(
+                'div',
+                [
+                    _('a', article.url, dict(href=article.url)),
+                ],
+            ),
             _('h1', str(article.title), {'class': 'lang-ta'}),
             _('h2', str(article.title_en), {'class': 'lang-en'}),
             _(
                 'div',
                 [
-                    _('a', article.url, dict(href=article.url)),
                     _('time', str(article.time_str)),
                 ],
             ),

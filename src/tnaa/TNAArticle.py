@@ -41,16 +41,16 @@ class TNAArticle:
         www = WWW(url)
         www.write()
         d = JSONFile(www.local_path).read()
-        
+
         return TNAArticle(
             hash,
             d['original_title'],
             d['original_body_lines'],
             d['url'],
-           (int)(d['time_ut']),
+            (int)(d['time_ut']),
         )
-    
-    @property 
+
+    @property
     def time_str(self):
         return TIME_FORMAT_TIME.stringify(Time(self.time_ut))
 
