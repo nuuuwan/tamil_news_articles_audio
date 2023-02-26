@@ -19,8 +19,8 @@ URL_BASE_TNAA = os.path.join(
     'https://raw.githubusercontent.com',
     'nuuuwan/tamil_news_articles_audio/data',
 )
-DIR_BASE = os.path.join('/tmp/tnaa')
-DIR_TTS = os.path.join('/tmp/tnaa/tts')
+DIR_BASE = os.path.join('/tmp', 'tnaa')
+DIR_TTS = os.path.join(DIR_BASE, 'tts')
 WORD_HASH_LENGTH = 6
 
 log = Log('TNAArticle')
@@ -116,7 +116,7 @@ class TNAArticle:
     @property
     def translator(self):
         return Translator('ta', 'en')
-    
+
     def init_dirs(self):
         Directory(DIR_BASE).mkdir()
         Directory(DIR_TTS).mkdir()

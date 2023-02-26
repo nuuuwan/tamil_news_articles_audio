@@ -1,4 +1,4 @@
-from functools import cache, cached_property
+from functools import cache
 from deep_translator import GoogleTranslator
 from utils import Log
 
@@ -11,7 +11,7 @@ class Translator:
         self.target = target
         self.translator = GoogleTranslator(source, target)
 
-    @cache        
+    @cache
     def translate(self, text):
         try:
             translated_text = self.translator.translate(text)

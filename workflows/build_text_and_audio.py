@@ -5,6 +5,7 @@ from tnaa import TNAArticle, TNALibrary
 log = Log('build_text_and_audio')
 MAX_NEW_ARTICLES_PER_RUN = 1
 
+
 def build_article(summary):
     hash = summary['hash']
     article = TNAArticle.from_hash(hash)

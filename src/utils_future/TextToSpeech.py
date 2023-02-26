@@ -6,6 +6,7 @@ from pydub import AudioSegment
 HASH_LENGTH = 6
 log = Log('TextToSpeech')
 
+
 class TextToSpeech:
     def __init__(self, dir_tts):
         self.dir_tts = dir_tts

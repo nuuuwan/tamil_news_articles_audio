@@ -1,2 +1,2 @@
-from tnaa.TNAArticle import TNAArticle
-from tnaa.TNALibrary import TNALibrary
+from tnaa.core.TNAArticle import TNAArticle
+from tnaa.core.TNALibrary import TNALibrary
