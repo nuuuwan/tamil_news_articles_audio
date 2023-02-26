@@ -65,7 +65,6 @@ def build_article(hash, article):
             _(
                 'tr',
                 [
-                    _('td', str(i + 1)),
                     _('td', word),
                     _('td', translated_word),
                 ],
@@ -105,8 +104,8 @@ def build_article(hash, article):
         ]
         + paragraph_list
         + [
-            _('h2', 'சொல்லகராதி', {'class': 'lang-ta'}),
-            _('h2', 'Vocabulary', {'class': 'lang-en'}),
+            _('h1', 'சொல்லகராதி', {'class': 'lang-ta'}),
+            _('h1', 'Vocabulary', {'class': 'lang-en'}),
             _(
                 'audio',
                 [
