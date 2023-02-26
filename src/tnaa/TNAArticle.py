@@ -25,6 +25,7 @@ WORD_HASH_LENGTH = 6
 def clean_word(x):
     for k in ["'", ',', '.']:
         x = x.replace(k, '')
+    x = x.strip()
     return x
 
 
@@ -72,6 +73,7 @@ class TNAArticle:
         content = ' '.join(self.script_lines)
         words = content.split(' ')
         cleaned_words = [clean_word(word) for word in words]
+        cleaned_words = [word for word in cleaned_words if len(word) >= 1]        
         return list(sorted(set(cleaned_words)))
 
     @property
