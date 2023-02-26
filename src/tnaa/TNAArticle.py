@@ -47,9 +47,21 @@ class TNAArticle:
         cleaned_words = [clean_word(word) for word in words]
         return list(sorted(set(cleaned_words)))
 
+    @property
+    def url_text(self):
+        return os.path.join(
+            'https://raw.githubusercontent.com',
+            'nuuuwan/tamil_news_articles_audio/data',
+            f'tnaa.{self.hash}/article.txt',
+        )
+
+    @property
+    def remote_exists(self):
+        return WWW(self.url_text).exists
+
     def save_text(self):
         Directory(self.file_base).mkdir()
-        
+
         text_file = File(os.path.join(self.file_base, 'article.txt'))
         if text_file.exists:
             log.debug(f'Already exists {text_file.path}')

@@ -3,7 +3,7 @@ from utils import Log
 from tnaa import TNAArticle, TNALibrary
 
 log = Log('build_text_and_audio')
-MAX_NEW_ARTICLES_PER_RUN = 3
+MAX_NEW_ARTICLES_PER_RUN = 5
 
 
 def main():
@@ -11,10 +11,19 @@ def main():
     n = len(summary_list)
     i_new = 0
     for i, summary in enumerate(summary_list):
-        article = TNAArticle.from_hash(summary['hash'])
+        hash = summary['hash']
+        log.info(f'{i+1}/{n} {hash}.')
+
+        article = TNAArticle.from_hash(hash)
+        if article.remote_exists:
+            log.debug('\tAlready built.')
+            continue
+
+        log.debug('\tBuilding...')
+
         article.save_text()
         article.save_audio()
-        log.info(f'{i+1}/{n} {article.title} complete.')
+        log.debug('\tComplete.')
 
         i_new += 1
         if i_new >= MAX_NEW_ARTICLES_PER_RUN:
