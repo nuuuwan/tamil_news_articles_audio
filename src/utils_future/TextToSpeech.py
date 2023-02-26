@@ -19,7 +19,12 @@ class TextToSpeech:
     def gen(self, text, lang):
         audio_file_path = self.get_audio_file_path(text, lang)
         if not os.path.exists(audio_file_path):
-            tts = gTTS(text, lang=lang)
-            tts.save(audio_file_path)
-            log.debug('Saved ' + audio_file_path)
+            try:
+                tts = gTTS(text, lang=lang)
+                tts.save(audio_file_path)
+                log.debug('Saved ' + audio_file_path)
+            except Exception as e:
+                log.error(e)
+                return AudioSegment.empty()
+
         return AudioSegment.from_mp3(audio_file_path)

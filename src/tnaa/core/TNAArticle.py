@@ -143,6 +143,8 @@ class TNAArticle:
         tts = self.tts
         audio_segment = AudioSegment.empty()
         for line in lines:
+            if len(line) == 0:
+                continue
             audio_segment += tts.gen(line, 'ta')
             translated_line = translator.translate(line)
             audio_segment += tts.gen(translated_line, 'en')
