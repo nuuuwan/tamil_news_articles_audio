@@ -27,8 +27,14 @@ audio {
     width: 300px;
 }
 
+.lang-ta {
+    color: black;
+    font-size: 150%;
+}
+
 .lang-en {
     color: lightgray;
+    font-size: 100%;
 }
 
 '''
@@ -37,14 +43,14 @@ audio {
 def build_article(hash, article):
     paragraph_list = []
     for i, line in enumerate(article.script_lines):
-        paragraph_list.append(_('p', line))
+        paragraph_list.append(_('p', line), {'class': 'lang-ta'})
         translated_line = TRANSLATOR.translate(line)
         paragraph_list.append(_('p', translated_line, {'class': 'lang-en'}))
 
     div_article = _(
         'div',
         [
-            _('h1', str(article.title)),
+            _('h1', str(article.title), {'class': 'lang-ta'}),
             _('h2', str(article.title_en), {'class': 'lang-en'}),
             _(
                 'audio',
