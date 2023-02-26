@@ -81,7 +81,7 @@ class TNAArticle:
     def url_text(self):
         return os.path.join(
             self.url_article,
-            'article.json',
+            'text.json',
         )
 
     @property

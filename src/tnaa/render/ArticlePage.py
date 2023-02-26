@@ -20,7 +20,8 @@ class ArticlePage(BasePage):
     @property
     def translated_lines(self):
         www = WWW(self.article.url_text)
-        data = JSONFile(www.local_path)
+        www.write()
+        data = JSONFile(www.local_path).read()
         return data['lines_en']
 
     def render_lines(self):
@@ -51,3 +52,8 @@ class ArticlePage(BasePage):
                 self.render_lines(),
             ],
         )
+
+
+
+if __name__ == '__main__':
+    ArticlePage('c66fc173').render_and_save()
