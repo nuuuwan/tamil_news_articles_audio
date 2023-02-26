@@ -23,6 +23,8 @@ def main():
 
         article.save_text()
         article.save_audio()
+        article.save_audio_vocab()
+
         log.debug('\tComplete.')
 
         i_new += 1

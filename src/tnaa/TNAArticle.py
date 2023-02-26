@@ -5,7 +5,7 @@ from functools import cached_property
 from deep_translator import GoogleTranslator
 from gtts import gTTS
 from pydub import AudioSegment
-from utils import WWW, Directory, File, JSONFile, Log, TIME_FORMAT_TIME, Time
+from utils import WWW, Directory, File, JSONFile, Log, TIME_FORMAT_TIME, Time, hashx
 
 URL_BASE = os.path.join(
     'https://raw.githubusercontent.com', 'nuuuwan/news_lk3_data/main'
@@ -18,8 +18,11 @@ log = Log('TNAArticle')
 
 TRANSLATOR = GoogleTranslator(source='ta', target='en')
 
+WORD_HASH_LENGTH = 6
 
 def clean_word(x):
+    for k in ["'", ',', '.']:
+        x = x.replace(k, '')
     return x
 
 
@@ -148,8 +151,59 @@ class TNAArticle:
         audio_segment.export(all_path, format='mp3')
         log.info(f'Saved {all_path}')
 
+    def save_audio_vocab(self):
+        Directory(self.file_base).mkdir()
 
-if __name__ == '__main__':
-    article = TNAArticle.from_hash('1550a0ed')
-    article.save_text()
-    article.save_audio()
+        dir_audio = os.path.join(self.file_base, 'audio')
+        dir_vocab = os.path.join(self.file_base, 'vocab')
+        all_path = os.path.join(dir_audio, 'vocab.mp3')
+
+        if os.path.exists(all_path):
+            log.debug(f'Already exists {all_path}')
+            return
+
+        Directory(dir_audio).mkdir()
+        Directory(dir_vocab).mkdir()
+
+        audio_segment = AudioSegment.empty()
+        words = self.words
+        n = len(words)
+        for i, word in enumerate(words):
+            print(word)
+            word_ta_hash = hashx.md5(word)[:WORD_HASH_LENGTH]
+            item_path = os.path.join(
+                dir_vocab, f'vocab-word-{word_ta_hash}-ta.mp3'
+            )
+            if os.path.exists(item_path):
+                continue
+
+            tts = gTTS(word, lang=LANG)
+            tts.save(item_path)
+            log.debug(f'{i+1}/{n} Saved {item_path}')
+
+            item_audio_segment = AudioSegment.from_mp3(item_path)
+            audio_segment += item_audio_segment
+
+            # ---
+
+            translated_word = TRANSLATOR.translate(word)
+            word_en_hash = hashx.md5(translated_word)[:WORD_HASH_LENGTH]
+            item_en_path = os.path.join(
+                dir_audio, f'vocab-word-{word_en_hash}-en.mp3'
+            )
+            if os.path.exists(item_en_path):
+                continue
+
+            
+            tts = gTTS(translated_word, lang='en')
+            tts.save(item_en_path)
+            log.debug(f'{i+1}/{n} Saved {item_en_path}')
+
+            item_en_audio_segment = AudioSegment.from_mp3(item_en_path)
+            audio_segment += item_en_audio_segment
+
+        audio_segment.export(all_path, format='mp3')
+        log.info(f'Saved {all_path}')        
+
+
+
