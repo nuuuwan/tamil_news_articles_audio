@@ -175,7 +175,7 @@ class TNAArticle:
         Directory(self.file_base).mkdir()
 
         dir_audio = os.path.join(self.file_base, 'audio')
-        dir_vocab = os.path.join(self.file_base, 'vocab')
+        dir_vocab = os.path.join('/tmp/tnaa.vocab/vocab')
         all_path = os.path.join(dir_audio, 'vocab.mp3')
 
         if os.path.exists(all_path):
