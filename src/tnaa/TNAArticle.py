@@ -5,7 +5,8 @@ from functools import cached_property
 from deep_translator import GoogleTranslator
 from gtts import gTTS
 from pydub import AudioSegment
-from utils import WWW, Directory, File, JSONFile, Log, TIME_FORMAT_TIME, Time, hashx
+from utils import (TIME_FORMAT_TIME, WWW, Directory, File, JSONFile, Log, Time,
+                   hashx)
 
 URL_BASE = os.path.join(
     'https://raw.githubusercontent.com', 'nuuuwan/news_lk3_data/main'
@@ -19,6 +20,7 @@ log = Log('TNAArticle')
 TRANSLATOR = GoogleTranslator(source='ta', target='en')
 
 WORD_HASH_LENGTH = 6
+
 
 def clean_word(x):
     for k in ["'", ',', '.']:
@@ -86,6 +88,14 @@ class TNAArticle:
             'https://raw.githubusercontent.com',
             'nuuuwan/tamil_news_articles_audio/data',
             f'tnaa.{self.hash}/audio/article.mp3',
+        )
+
+    @property
+    def url_audio_vocab(self):
+        return os.path.join(
+            'https://raw.githubusercontent.com',
+            'nuuuwan/tamil_news_articles_audio/data',
+            f'tnaa.{self.hash}/audio/vocab.mp3',
         )
 
     @property
@@ -194,7 +204,6 @@ class TNAArticle:
             if os.path.exists(item_en_path):
                 continue
 
-            
             tts = gTTS(translated_word, lang='en')
             tts.save(item_en_path)
             log.debug(f'{i+1}/{n} Saved {item_en_path}')
@@ -203,7 +212,4 @@ class TNAArticle:
             audio_segment += item_en_audio_segment
 
         audio_segment.export(all_path, format='mp3')
-        log.info(f'Saved {all_path}')        
-
-
-
+        log.info(f'Saved {all_path}')

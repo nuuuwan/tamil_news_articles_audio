@@ -54,6 +54,22 @@ def build_article(hash, article):
         translated_line = TRANSLATOR.translate(line)
         paragraph_list.append(_('p', translated_line, {'class': 'lang-en'}))
 
+    tr_list = []
+    for i, word in enumerate(article.words):
+        translated_word = TRANSLATOR.translate(word)
+        tr_list.append(
+            _(
+                'tr',
+                [
+                    _('td', str(i + 1)),
+                    _('td', word),
+                    _('td', translated_word),
+                ],
+            )
+        )
+
+    vocab_table = _('table', [_('tbody', tr_list)])
+
     div_article = _(
         'div',
         [
@@ -70,8 +86,7 @@ def build_article(hash, article):
                 ],
             ),
             _('h1', str(article.title), {'class': 'lang-ta'}),
-            _('h2', str(article.title_en), {'class': 'lang-en'}),
-            
+            _('h1', str(article.title_en), {'class': 'lang-en'}),
             _(
                 'audio',
                 [
@@ -84,7 +99,23 @@ def build_article(hash, article):
                 dict(controls=True),
             ),
         ]
-        + paragraph_list,
+        + paragraph_list
+        + [
+            _('h2', 'சொல்லகராதி', {'class': 'lang-ta'}),
+            _('h2', 'Vocabulary', {'class': 'lang-en'}),
+            _(
+                'audio',
+                [
+                    _(
+                        'source',
+                        None,
+                        dict(src=article.url_audio_vocab, type='audio/mp3'),
+                    ),
+                ],
+                dict(controls=True),
+            ),
+            vocab_table,
+        ],
     )
 
     html_path = os.path.join(DIR_TMP, f'{hash}.htm')
