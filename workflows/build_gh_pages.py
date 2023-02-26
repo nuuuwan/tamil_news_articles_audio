@@ -55,7 +55,7 @@ def build_article(hash, article):
             _(
                 'div',
                 [
-                    _('a', str(article.url)),
+                    _('a', article.url, dict(href=article.url)),
                     _('time', str(article.time_str)),
                 ],
             ),
