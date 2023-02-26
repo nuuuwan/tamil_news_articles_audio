@@ -1,4 +1,4 @@
-name: gh_pages_manual
+name: gh_pages_cron
 
 on:
  schedule:
