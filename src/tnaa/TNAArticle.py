@@ -199,7 +199,12 @@ class TNAArticle:
             audio_segment += item_audio_segment
 
             # ---
-            translated_word = TRANSLATOR.translate(word)
+            try:
+                translated_word = TRANSLATOR.translate(word)
+            except Exception as e:
+                log.error(e)
+                continue
+            
             log.debug(f'"{word}" -> "{translated_word}"')
             if not translated_word:
                 continue
