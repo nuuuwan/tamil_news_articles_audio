@@ -47,7 +47,9 @@ def main():
         for i, line in enumerate(article.script_lines):
             paragraph_list.append(_('p', line))
             translated_line = TRANSLATOR.translate(line)
-            paragraph_list.append(_('p', translated_line, {'class': 'lang-en'}))
+            paragraph_list.append(
+                _('p', translated_line, {'class': 'lang-en'})
+            )
 
         div_article = _(
             'div',
@@ -64,8 +66,9 @@ def main():
                         ),
                     ],
                     dict(controls=True),
-                ),                
-            ] + paragraph_list,
+                ),
+            ]
+            + paragraph_list,
         )
         body_content_list.append(div_article)
 

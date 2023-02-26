@@ -16,10 +16,12 @@ LANG = 'ta'
 log = Log('TNAArticle')
 
 
-TRANSLATOR =GoogleTranslator(source='ta', target='en')
+TRANSLATOR = GoogleTranslator(source='ta', target='en')
+
 
 def clean_word(x):
     return x
+
 
 @dataclass
 class TNAArticle:
@@ -27,7 +29,7 @@ class TNAArticle:
     title: str
     body_lines: list
 
-    @cached_property 
+    @cached_property
     def title_en(self):
         return TRANSLATOR.translate(self.title)
 
@@ -46,7 +48,7 @@ class TNAArticle:
     @property
     def script_lines(self):
         return [self.title] + self.body_lines
-    
+
     @property
     def words(self):
         content = ' '.join(self.script_lines)
@@ -101,7 +103,9 @@ class TNAArticle:
         audio_segment = AudioSegment.empty()
         n = len(self.script_lines)
         for i, line in enumerate(self.script_lines):
-            item_path = os.path.join(dir_audio, f'article-para-{i:04d}-ta.mp3')
+            item_path = os.path.join(
+                dir_audio, f'article-para-{i:04d}-ta.mp3'
+            )
             if os.path.exists(item_path):
                 continue
 
@@ -114,7 +118,9 @@ class TNAArticle:
 
             # ---
 
-            item_en_path = os.path.join(dir_audio, f'article-para-{i:04d}-en.mp3')
+            item_en_path = os.path.join(
+                dir_audio, f'article-para-{i:04d}-en.mp3'
+            )
             if os.path.exists(item_en_path):
                 continue
 
@@ -125,7 +131,6 @@ class TNAArticle:
 
             item_en_audio_segment = AudioSegment.from_mp3(item_en_path)
             audio_segment += item_en_audio_segment
-
 
         audio_segment.export(all_path, format='mp3')
         log.info(f'Saved {all_path}')
