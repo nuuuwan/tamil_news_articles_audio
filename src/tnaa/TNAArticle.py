@@ -48,7 +48,7 @@ class TNAArticle:
         return list(sorted(set(cleaned_words)))
 
     def save_text(self):
-        text_file = File(self.file_base + '.txt')
+        text_file = File(os.path.join(self.file_base, 'article.txt'))
         if text_file.exists:
             log.debug(f'Already exists {text_file.path}')
             return
@@ -58,17 +58,19 @@ class TNAArticle:
         log.debug(f'Saved {text_file.path}')
 
     def save_audio(self):
-        all_path = self.file_base + '/audio/all.mp3'
+        dir_audio = os.path.join(self.file_base, 'audio')
+        all_path = os.path.join(dir_audio, 'article.mp3')
+
         if os.path.exists(all_path):
             log.debug(f'Already exists {all_path}')
             return
 
-        Directory(self.file_base + '/audio').mkdir()
+        Directory(dir_audio).mkdir()
 
         audio_segment = AudioSegment.empty()
         n = len(self.script_lines)
         for i, line in enumerate(self.script_lines):
-            item_path = self.file_base + f'/audio/{i:04d}.mp3'
+            item_path = os.path.join(dir_audio, f'article-para-{i:04d}.mp3')
             if os.path.exists(item_path):
                 continue
 
