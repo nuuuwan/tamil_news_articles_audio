@@ -56,7 +56,11 @@ def build_article(hash, article):
 
     tr_list = []
     for i, word in enumerate(article.words):
-        translated_word = TRANSLATOR.translate(word)
+        try:
+            translated_word = TRANSLATOR.translate(word)
+        except:
+            continue
+        
         tr_list.append(
             _(
                 'tr',
