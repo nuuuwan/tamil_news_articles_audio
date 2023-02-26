@@ -3,7 +3,7 @@ from utils import Log
 from tnaa import TNAArticle, TNALibrary
 
 log = Log('build_text_and_audio')
-MAX_NEW_ARTICLES_PER_RUN = 5
+MAX_NEW_ARTICLES_PER_RUN = 1
 
 
 def main():
