@@ -42,6 +42,6 @@ jobs:
         
         cp -r /tmp/tnaa/* .
         git add .
-        git commit -m "Uploaded data"
+        git commit -m "Uploaded gh-pages"
 
         git push origin gh-pages
