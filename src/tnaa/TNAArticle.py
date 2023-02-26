@@ -218,7 +218,7 @@ class TNAArticle:
                 continue
             word_en_hash = hashx.md5(translated_word)[:WORD_HASH_LENGTH]
             item_en_path = os.path.join(
-                dir_audio, f'vocab-word-{word_en_hash}-en.mp3'
+                dir_vocab, f'vocab-word-{word_en_hash}-en.mp3'
             )
             if os.path.exists(item_en_path):
                 continue
