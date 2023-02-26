@@ -3,7 +3,7 @@ import os
 from utils import Directory, Log
 from utils.xmlx import _
 
-from tnaa import TNAArticle, TNALibrary
+from tnaa import TNAArticle, TNALibrary, TRANSLATOR
 
 log = Log('build_gh_pages')
 DIR_TMP = '/tmp/tnaa'
@@ -19,7 +19,7 @@ audio {
     width: 300px;
 }
 
-.title-en {
+.lang-en {
     color: lightgray;
 }
 '''
@@ -33,22 +33,27 @@ def main():
     body_content_list = []
 
     body_content_list.append(_('h1', 'Tamil News Article Audio'))
-    for i, summary in enumerate(summary_list):
+    for i, summary in enumerate(summary_list[:10]):
         hash = summary['hash']
         log.info(f'{i+1}/{n} {hash}.')
         article = TNAArticle.from_hash(hash)
         try:
             if not article.remote_exists:
                 log.debug('\tNot yet built. Skipping')
-                break
         except BaseException:
             continue
+
+        paragraph_list = []
+        for i, line in enumerate(article.script_lines):
+            paragraph_list.append(_('p', line))
+            translated_line = TRANSLATOR.translate(line)
+            paragraph_list.append(_('p', translated_line, {'class': 'lang-en'}))
 
         div_article = _(
             'div',
             [
                 _('h2', str(article.title)),
-                _('h3', str(article.title_en), {'class': 'title-en'}),
+                _('h3', str(article.title_en), {'class': 'lang-en'}),
                 _(
                     'audio',
                     [
@@ -59,8 +64,8 @@ def main():
                         ),
                     ],
                     dict(controls=True),
-                ),
-            ],
+                ),                
+            ] + paragraph_list,
         )
         body_content_list.append(div_article)
 

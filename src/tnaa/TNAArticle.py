@@ -46,7 +46,7 @@ class TNAArticle:
     @property
     def script_lines(self):
         return [self.title] + self.body_lines
-
+    
     @property
     def words(self):
         content = ' '.join(self.script_lines)
