@@ -38,6 +38,7 @@ class TNAArticle:
     @staticmethod
     def from_hash(hash):
         url = os.path.join(URL_BASE_NEWS, f'{hash}.json')
+        log.debug(f'Loading from {url}')
         www = WWW(url)
         www.write()
         d = JSONFile(www.local_path).read()
@@ -85,14 +86,14 @@ class TNAArticle:
         )
 
     @property
-    def url_audio(self):
+    def url_article_audio(self):
         return os.path.join(
             self.url_article,
             'article.mp3',
         )
 
     @property
-    def url_audio_vocab(self):
+    def url_vocab_audio(self):
         return os.path.join(
             self.url_article,
             'vocab.mp3',
@@ -125,9 +126,15 @@ class TNAArticle:
         lines = self.lines
         translator = self.translator
         translated_lines = [translator.translate(line) for line in lines]
+
+        words = self.words
+        translated_words = [translator.translate(word) for word in words]
+
         data = dict(
             lines_ta=lines,
             lines_en=translated_lines,
+            words_ta=words,
+            words_en=translated_words,
         )
         text_file.write(data)
         log.info(f'Saved {text_file.path}')

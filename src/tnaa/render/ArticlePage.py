@@ -24,6 +24,13 @@ class ArticlePage(BasePage):
         data = JSONFile(www.local_path).read()
         return data['lines_en']
 
+    @property
+    def translated_words(self):
+        www = WWW(self.article.url_text)
+        www.write()
+        data = JSONFile(www.local_path).read()
+        return data['words_en']
+
     def render_lines(self):
         return _(
             'div',
@@ -41,6 +48,26 @@ class ArticlePage(BasePage):
             ),
         )
 
+    def render_vocab_table(self):
+        tr_list = list(
+            map(
+                lambda x: _(
+                    'tr',
+                    [
+                        _('td', x[0], {'class': 'lang-ta'}),
+                        _('td', x[1], {'class': 'lang-en'}),
+                    ],
+                ),
+                zip(self.article.words, self.translated_words),
+            )
+        )
+        return _(
+            'table',
+            [
+                _('tbody', tr_list),
+            ],
+        )
+
     def render_body(self):
         article = self.article
         return _(
@@ -49,10 +76,38 @@ class ArticlePage(BasePage):
                 _('div', [_('time', article.time_str)]),
                 _('a', article.url, dict(href=article.url)),
                 _('h1', article.title, {'class': 'lang-ta'}),
+                _(
+                    'audio',
+                    [
+                        _(
+                            'source',
+                            None,
+                            dict(
+                                src=article.url_article_audio,
+                                type='audio/mpeg',
+                            ),
+                        ),
+                    ],
+                    dict(controls=True),
+                ),
                 self.render_lines(),
+                _('h2', 'Vocabulary', {'class': 'lang-ta'}),
+                _(
+                    'audio',
+                    [
+                        _(
+                            'source',
+                            None,
+                            dict(
+                                src=article.url_vocab_audio, type='audio/mpeg'
+                            ),
+                        ),
+                    ],
+                    dict(controls=True),
+                ),
+                self.render_vocab_table(),
             ],
         )
-
 
 
 if __name__ == '__main__':

@@ -1,8 +1,11 @@
+from utils import Log
 from utils.xmlx import _
 
 from tnaa import TNAArticle, TNALibrary
 from tnaa.render.ArticlePage import ArticlePage
 from tnaa.render.BasePage import BasePage
+
+log = Log('IndexPage')
 
 
 class IndexPage(BasePage):
@@ -18,7 +21,11 @@ class IndexPage(BasePage):
             hash = summary['hash']
             article = TNAArticle.from_hash(hash)
             if article.remote_exists:
+                log.info(f'{hash}: exists')
                 articles.append(article)
+                break
+            else:
+                log.debug(f'{hash}: does not exist. Skippiing.')
         return articles
 
     def render_article_list_item(self, article):
@@ -31,7 +38,11 @@ class IndexPage(BasePage):
                     'div',
                     [
                         _('span', article.time_str + ' '),
-                        _('a', article.title, dict(href=article.url)),
+                        _(
+                            'a',
+                            article.title,
+                            dict(href=article.hash + '.htm'),
+                        ),
                     ],
                 )
             ],
