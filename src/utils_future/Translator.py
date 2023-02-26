@@ -1,4 +1,5 @@
 from functools import cache
+
 from deep_translator import GoogleTranslator
 from utils import Log
 

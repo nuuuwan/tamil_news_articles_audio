@@ -1,15 +1,9 @@
 import os
 from dataclasses import dataclass
-from pydub import AudioSegment
 
-from utils import (
-    TIME_FORMAT_TIME,
-    WWW,
-    Directory,
-    JSONFile,
-    Log,
-    Time,
-)
+from pydub import AudioSegment
+from utils import TIME_FORMAT_TIME, WWW, Directory, JSONFile, Log, Time
+
 from utils_future import TextToSpeech, Translator
 
 URL_BASE_NEWS = os.path.join(

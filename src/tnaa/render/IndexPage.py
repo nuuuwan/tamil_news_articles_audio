@@ -1,6 +1,8 @@
 from utils.xmlx import _
+
+from tnaa import TNAArticle, TNALibrary
+from tnaa.render.ArticlePage import ArticlePage
 from tnaa.render.BasePage import BasePage
-from tnaa import TNALibrary, TNAArticle
 
 
 class IndexPage(BasePage):
@@ -15,13 +17,13 @@ class IndexPage(BasePage):
         for summary in summary_list:
             hash = summary['hash']
             article = TNAArticle.from_hash(hash)
-            # if article.remote_exists:
-            articles.append(article)
-            if len(articles) >= 3:
-                break
+            if article.remote_exists:
+                articles.append(article)
         return articles
 
     def render_article_list_item(self, article):
+        ArticlePage(article.hash).render_and_save()
+
         return _(
             'li',
             [
@@ -52,9 +54,5 @@ class IndexPage(BasePage):
             [
                 _('h1', 'Tamil News Article Audio'),
                 self.render_article_list(),
-            ]
+            ],
         )
-
-
-if __name__ == '__main__':
-    IndexPage().render_and_save()

@@ -2,7 +2,9 @@ STYLE = '''
 body {
     font-family: Futura;
     width: 600px;
+    padding: 20px;
     margin: auto;
+
 }
 
 a {
@@ -19,7 +21,7 @@ audio {
 }
 
 time {
-    font-size: 60%;
+    font-size: 80%;
     color: #084;
 
 }

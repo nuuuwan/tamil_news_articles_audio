@@ -1,7 +1,8 @@
 import os
-from utils import hashx, Log
+
 from gtts import gTTS
 from pydub import AudioSegment
+from utils import Log, hashx
 
 HASH_LENGTH = 6
 log = Log('TextToSpeech')

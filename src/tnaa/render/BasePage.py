@@ -1,6 +1,8 @@
 import os
-from utils import Log, Directory
+
+from utils import Directory, Log
 from utils.xmlx import _
+
 from tnaa.render.STYLE import STYLE
 
 DIR_BASE = os.path.join('/tmp', 'tnaa')
