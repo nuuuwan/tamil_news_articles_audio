@@ -110,5 +110,3 @@ class ArticlePage(BasePage):
         )
 
 
-if __name__ == '__main__':
-    ArticlePage('c66fc173').render_and_save()

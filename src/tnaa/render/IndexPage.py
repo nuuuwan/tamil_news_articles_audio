@@ -23,7 +23,6 @@ class IndexPage(BasePage):
             if article.remote_exists:
                 log.info(f'{hash}: exists')
                 articles.append(article)
-                break
             else:
                 log.debug(f'{hash}: does not exist. Skippiing.')
         return articles
