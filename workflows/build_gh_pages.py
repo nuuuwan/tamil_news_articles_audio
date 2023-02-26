@@ -3,7 +3,7 @@ import os
 from utils import Directory, Log
 from utils.xmlx import _
 
-from tnaa import TNAArticle, TNALibrary, TRANSLATOR
+from tnaa import TRANSLATOR, TNAArticle, TNALibrary
 
 log = Log('build_gh_pages')
 DIR_TMP = '/tmp/tnaa'
@@ -25,7 +25,53 @@ audio {
 '''
 
 
-def main():
+def build_article(hash, article):
+    paragraph_list = []
+    for i, line in enumerate(article.script_lines):
+        paragraph_list.append(_('p', line))
+        translated_line = TRANSLATOR.translate(line)
+        paragraph_list.append(_('p', translated_line, {'class': 'lang-en'}))
+
+    div_article = _(
+        'div',
+        [
+            _('h1', str(article.title)),
+            _('h2', str(article.title_en), {'class': 'lang-en'}),
+            _(
+                'audio',
+                [
+                    _(
+                        'source',
+                        None,
+                        dict(src=article.url_audio, type='audio/mp3'),
+                    ),
+                ],
+                dict(controls=True),
+            ),
+        ]
+        + paragraph_list,
+    )
+
+    html_path = os.path.join(DIR_TMP, f'{hash}.htm')
+    html = _(
+        'html',
+        [
+            _(
+                'head',
+                [
+                    _('title', 'Tamil News Article Audio'),
+                    _('meta', None, dict(charset='utf-8')),
+                    _('style', STYLE),
+                ],
+            ),
+            _('body', [div_article]),
+        ],
+    )
+    html.store(html_path)
+    log.info(f'\tWrote {html_path}')
+
+
+def build_index():
     Directory(DIR_TMP).mkdir()
 
     summary_list = TNALibrary().summary_tamil_articles
@@ -33,44 +79,44 @@ def main():
     body_content_list = []
 
     body_content_list.append(_('h1', 'Tamil News Article Audio'))
-    for i, summary in enumerate(summary_list[:10]):
+    for i, summary in enumerate(summary_list):
         hash = summary['hash']
-        log.info(f'{i+1}/{n} {hash}.')
+        log_prefix = f'{i+1}/{n} {hash}.'
         article = TNAArticle.from_hash(hash)
-        try:
-            if not article.remote_exists:
-                log.debug('\tNot yet built. Skipping')
-        except BaseException:
+        
+        if not article.remote_exists:
+            log.debug(f'{log_prefix} Not yet built. Skipping')
             continue
+        
 
-        paragraph_list = []
-        for i, line in enumerate(article.script_lines):
-            paragraph_list.append(_('p', line))
-            translated_line = TRANSLATOR.translate(line)
-            paragraph_list.append(
-                _('p', translated_line, {'class': 'lang-en'})
-            )
+        log.debug(f'{log_prefix} Building...')
 
+        href = f'{hash}.htm'
         div_article = _(
-            'div',
+            'ul',
             [
-                _('h2', str(article.title)),
-                _('h3', str(article.title_en), {'class': 'lang-en'}),
                 _(
-                    'audio',
+                    'li',
                     [
                         _(
-                            'source',
-                            None,
-                            dict(src=article.url_audio, type='audio/mp3'),
+                            'a',
+                            [
+                                _('span', str(article.title) + ' '),
+                                _(
+                                    'span',
+                                    str(article.title_en),
+                                    {'class': 'lang-en'},
+                                ),
+                            ],
+                            dict(href=href),
                         ),
                     ],
-                    dict(controls=True),
                 ),
-            ]
-            + paragraph_list,
+            ],
         )
         body_content_list.append(div_article)
+
+        build_article(hash, article)
 
     html_path = os.path.join(DIR_TMP, 'index.htm')
     html = _(
@@ -92,4 +138,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    build_index()
+

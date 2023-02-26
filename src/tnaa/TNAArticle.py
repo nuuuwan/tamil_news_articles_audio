@@ -1,11 +1,11 @@
-from functools import cached_property
 import os
 from dataclasses import dataclass
+from functools import cached_property
 
+from deep_translator import GoogleTranslator
 from gtts import gTTS
 from pydub import AudioSegment
 from utils import WWW, Directory, File, JSONFile, Log
-from deep_translator import GoogleTranslator
 
 URL_BASE = os.path.join(
     'https://raw.githubusercontent.com', 'nuuuwan/news_lk3_data/main'
