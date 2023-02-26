@@ -199,7 +199,6 @@ class TNAArticle:
             audio_segment += item_audio_segment
 
             # ---
-
             translated_word = TRANSLATOR.translate(word)
             if not translated_word:
                 continue
