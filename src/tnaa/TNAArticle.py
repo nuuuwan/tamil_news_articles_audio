@@ -56,6 +56,14 @@ class TNAArticle:
         )
 
     @property
+    def url_audio(self):
+        return os.path.join(
+            'https://raw.githubusercontent.com',
+            'nuuuwan/tamil_news_articles_audio/data',
+            f'tnaa.{self.hash}/audio/article.mp3',
+        )
+
+    @property
     def remote_exists(self):
         return WWW(self.url_text).exists
 
