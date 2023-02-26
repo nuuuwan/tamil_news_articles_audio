@@ -8,6 +8,22 @@ from tnaa import TNAArticle, TNALibrary
 log = Log('build_gh_pages')
 DIR_TMP = '/tmp/tnaa'
 
+STYLE = '''
+body {
+    font-family: Futura;
+    width: 600px;
+    margin: auto;
+}
+
+audio {
+    width: 300px;
+}
+
+.title-en {
+    color: lightgray;
+}
+'''
+
 
 def main():
     Directory(DIR_TMP).mkdir()
@@ -32,6 +48,7 @@ def main():
             'div',
             [
                 _('h2', str(article.title)),
+                _('h3', str(article.title_en), {'class': 'title-en'}),
                 _(
                     'audio',
                     [
@@ -41,7 +58,7 @@ def main():
                             dict(src=article.url_audio, type='audio/mp3'),
                         ),
                     ],
-                    dict(controls=True, style="width:300px;"),
+                    dict(controls=True),
                 ),
             ],
         )
@@ -56,6 +73,7 @@ def main():
                 [
                     _('title', 'Tamil News Article Audio'),
                     _('meta', None, dict(charset='utf-8')),
+                    _('style', STYLE),
                 ],
             ),
             _('body', body_content_list),
