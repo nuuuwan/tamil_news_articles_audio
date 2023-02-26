@@ -16,7 +16,7 @@ class Translator:
     def translate(self, text):
         try:
             translated_text = self.translator.translate(text)
-            log.debug('"{text}" -> "{translated_text}"')
+            log.debug(f'"{text}" -> "{translated_text}"')
             return translated_text
         except Exception as e:
             log.warning(e)
