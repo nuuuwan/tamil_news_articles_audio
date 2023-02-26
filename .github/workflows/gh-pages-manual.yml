@@ -1,9 +1,9 @@
-name: Manual
+name: gh_pages_manual
 
 on: workflow_dispatch
 
 jobs:
-  build_text_and_audio:
+  gh_pages:
 
     runs-on: ubuntu-latest
 
