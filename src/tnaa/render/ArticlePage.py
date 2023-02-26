@@ -21,7 +21,7 @@ class ArticlePage(BasePage):
     def translated_lines(self):
         www = WWW(self.article.url_text)
         data = JSONFile(www.local_path)
-        return data['translated_lines']
+        return data['lines_en']
 
     def render_lines(self):
         return _(
