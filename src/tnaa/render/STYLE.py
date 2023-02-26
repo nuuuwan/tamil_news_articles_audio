@@ -1,7 +1,7 @@
 STYLE = '''
 body {
     font-family: Futura;
-    width: 600px;
+    width: 800px;
     padding: 20px;
     margin: auto;
 
