@@ -200,6 +200,7 @@ class TNAArticle:
 
             # ---
             translated_word = TRANSLATOR.translate(word)
+            log.debug(f'"{word}" -> "{translated_word}"')
             if not translated_word:
                 continue
             word_en_hash = hashx.md5(translated_word)[:WORD_HASH_LENGTH]
