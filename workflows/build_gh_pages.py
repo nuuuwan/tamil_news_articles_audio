@@ -43,7 +43,7 @@ audio {
 def build_article(hash, article):
     paragraph_list = []
     for i, line in enumerate(article.script_lines):
-        paragraph_list.append(_('p', line), {'class': 'lang-ta'})
+        paragraph_list.append(_('p', line, {'class': 'lang-ta'}))
         translated_line = TRANSLATOR.translate(line)
         paragraph_list.append(_('p', translated_line, {'class': 'lang-en'}))
 
@@ -52,6 +52,13 @@ def build_article(hash, article):
         [
             _('h1', str(article.title), {'class': 'lang-ta'}),
             _('h2', str(article.title_en), {'class': 'lang-en'}),
+            _(
+                'div',
+                [
+                    _('a', str(article.url)),
+                    _('time', str(article.time_str)),
+                ],
+            ),
             _(
                 'audio',
                 [
@@ -98,11 +105,10 @@ def build_index():
         hash = summary['hash']
         log_prefix = f'{i+1}/{n} {hash}.'
         article = TNAArticle.from_hash(hash)
-        
+
         if not article.remote_exists:
             log.debug(f'{log_prefix} Not yet built. Skipping')
             continue
-        
 
         log.debug(f'{log_prefix} Building...')
 
@@ -117,7 +123,6 @@ def build_index():
                             'a',
                             [
                                 _('span', str(article.title)),
-                                
                             ],
                             dict(href=href),
                         ),
@@ -155,4 +160,3 @@ def build_index():
 
 if __name__ == '__main__':
     build_index()
-

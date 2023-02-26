@@ -5,7 +5,7 @@ from functools import cached_property
 from deep_translator import GoogleTranslator
 from gtts import gTTS
 from pydub import AudioSegment
-from utils import WWW, Directory, File, JSONFile, Log
+from utils import WWW, Directory, File, JSONFile, Log, TIME_FORMAT_TIME, Time
 
 URL_BASE = os.path.join(
     'https://raw.githubusercontent.com', 'nuuuwan/news_lk3_data/main'
@@ -28,6 +28,8 @@ class TNAArticle:
     hash: str
     title: str
     body_lines: list
+    url: str
+    time_ut: int
 
     @cached_property
     def title_en(self):
@@ -39,7 +41,18 @@ class TNAArticle:
         www = WWW(url)
         www.write()
         d = JSONFile(www.local_path).read()
-        return TNAArticle(hash, d['original_title'], d['original_body_lines'])
+        
+        return TNAArticle(
+            hash,
+            d['original_title'],
+            d['original_body_lines'],
+            d['url'],
+           (int)(d['time_ut']),
+        )
+    
+    @property 
+    def time_str(self):
+        return TIME_FORMAT_TIME.stringify(Time(self.time_ut))
 
     @property
     def file_base(self):

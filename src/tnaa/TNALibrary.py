@@ -21,7 +21,7 @@ class TNALibrary:
         for d in d_list:
             hash = hashx.md5(d['url'] + HASH_SALT)[:HASH_LENGTH]
             d['hash'] = hash
-
+        d_list = sorted(d_list, key=lambda x: x['time_str'], reverse=True)
         return d_list
 
     @cached_property
