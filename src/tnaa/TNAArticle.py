@@ -181,7 +181,9 @@ class TNAArticle:
         words = self.words
         n = len(words)
         for i, word in enumerate(words):
-            print(word)
+            if not word:
+                continue
+
             word_ta_hash = hashx.md5(word)[:WORD_HASH_LENGTH]
             item_path = os.path.join(
                 dir_vocab, f'vocab-word-{word_ta_hash}-ta.mp3'
@@ -199,6 +201,8 @@ class TNAArticle:
             # ---
 
             translated_word = TRANSLATOR.translate(word)
+            if not translated_word:
+                continue
             word_en_hash = hashx.md5(translated_word)[:WORD_HASH_LENGTH]
             item_en_path = os.path.join(
                 dir_audio, f'vocab-word-{word_en_hash}-en.mp3'
