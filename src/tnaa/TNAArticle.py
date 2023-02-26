@@ -5,8 +5,16 @@ from functools import cached_property
 from deep_translator import GoogleTranslator
 from gtts import gTTS
 from pydub import AudioSegment
-from utils import (TIME_FORMAT_TIME, WWW, Directory, File, JSONFile, Log, Time,
-                   hashx)
+from utils import (
+    TIME_FORMAT_TIME,
+    WWW,
+    Directory,
+    File,
+    JSONFile,
+    Log,
+    Time,
+    hashx,
+)
 
 URL_BASE = os.path.join(
     'https://raw.githubusercontent.com', 'nuuuwan/news_lk3_data/main'
@@ -73,7 +81,7 @@ class TNAArticle:
         content = ' '.join(self.script_lines)
         words = content.split(' ')
         cleaned_words = [clean_word(word) for word in words]
-        cleaned_words = [word for word in cleaned_words if len(word) >= 1]        
+        cleaned_words = [word for word in cleaned_words if len(word) >= 1]
         return list(sorted(set(cleaned_words)))
 
     @property
@@ -204,7 +212,7 @@ class TNAArticle:
             except Exception as e:
                 log.error(e)
                 continue
-            
+
             log.debug(f'"{word}" -> "{translated_word}"')
             if not translated_word:
                 continue

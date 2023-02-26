@@ -58,9 +58,9 @@ def build_article(hash, article):
     for i, word in enumerate(article.words):
         try:
             translated_word = TRANSLATOR.translate(word)
-        except:
+        except BaseException:
             continue
-        
+
         tr_list.append(
             _(
                 'tr',
@@ -167,6 +167,10 @@ def build_index():
                 _(
                     'li',
                     [
+                        _(
+                            'span',
+                            f' ({article.time_str})',
+                        ),
                         _(
                             'a',
                             [
