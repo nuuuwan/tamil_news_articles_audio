@@ -28,6 +28,12 @@ audio {
     width: 300px;
 }
 
+time {
+    font-size: 60%;
+    color: #084;
+
+}
+
 .lang-ta {
     color: black;
     font-size: 150%;
@@ -54,17 +60,18 @@ def build_article(hash, article):
             _(
                 'div',
                 [
+                    _('time', str(article.time_str)),
+                ],
+            ),
+            _(
+                'div',
+                [
                     _('a', article.url, dict(href=article.url)),
                 ],
             ),
             _('h1', str(article.title), {'class': 'lang-ta'}),
             _('h2', str(article.title_en), {'class': 'lang-en'}),
-            _(
-                'div',
-                [
-                    _('time', str(article.time_str)),
-                ],
-            ),
+            
             _(
                 'audio',
                 [
