@@ -1,5 +1,4 @@
-from tnaa import TNAArticle, TNALibrary
-
+from tnaa import TNALibrary, TNAArticle
 
 def main():
     summary_list = TNALibrary().summary_tamil_articles
