@@ -93,6 +93,7 @@ class ArticlePage(BasePage):
         return _(
             'body',
             [
+                _('a', 'Back', {'href': 'index.htm'}),
                 ArticlePage.render_article_header(article),
                 _(
                     'audio',
