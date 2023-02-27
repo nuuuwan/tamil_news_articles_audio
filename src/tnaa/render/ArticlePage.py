@@ -19,16 +19,12 @@ class ArticlePage(BasePage):
 
     @property
     def translated_lines(self):
-        www = WWW(self.article.url_text)
-        www.write()
-        data = JSONFile(www.local_path).read()
+        data = JSONFile(WWW(self.article.url_text).download()).read()
         return data['lines_en']
 
     @property
     def translated_words(self):
-        www = WWW(self.article.url_text)
-        www.write()
-        data = JSONFile(www.local_path).read()
+        data = JSONFile(WWW(self.article.url_text).download()).read()
         return data['words_en']
 
     def render_lines(self):
@@ -42,6 +38,7 @@ class ArticlePage(BasePage):
                             _('p', x[0], {'class': 'lang-ta'}),
                             _('p', x[1], {'class': 'lang-en'}),
                         ],
+                        {'class': 'article-line'},
                     ),
                     zip(self.article.lines, self.translated_lines),
                 )
@@ -54,11 +51,12 @@ class ArticlePage(BasePage):
                 lambda x: _(
                     'tr',
                     [
-                        _('td', x[0], {'class': 'lang-ta'}),
-                        _('td', x[1], {'class': 'lang-en'}),
+                        _('td', str(x[0] + 1), {'class': 'lang-en'}),
+                        _('td', x[1][0], {'class': 'lang-ta'}),
+                        _('td', x[1][1], {'class': 'lang-en'}),
                     ],
                 ),
-                zip(self.article.words, self.translated_words),
+                enumerate(zip(self.article.words, self.translated_words)),
             )
         )
         return _(
@@ -68,14 +66,34 @@ class ArticlePage(BasePage):
             ],
         )
 
+    @staticmethod
+    def render_article_header(article):
+        return _(
+            'div',
+            [
+                _('div', [_('time', article.time_str)]),
+                _(
+                    'a',
+                    article.url,
+                    {'class': 'article-url', 'href': article.url},
+                ),
+                _(
+                    'a',
+                    [
+                        _('h1', article.title, {'class': 'lang-ta'}),
+                    ],
+                    {'class': 'article-title', 'href': article.hash + '.htm'},
+                ),
+            ],
+            {'class': 'article-header'},
+        )
+
     def render_body(self):
         article = self.article
         return _(
             'body',
             [
-                _('div', [_('time', article.time_str)]),
-                _('a', article.url, dict(href=article.url)),
-                _('h1', article.title, {'class': 'lang-ta'}),
+                ArticlePage.render_article_header(article),
                 _(
                     'audio',
                     [
@@ -91,7 +109,8 @@ class ArticlePage(BasePage):
                     dict(controls=True),
                 ),
                 self.render_lines(),
-                _('h2', 'Vocabulary', {'class': 'lang-ta'}),
+                _('h2', 'சொல்லகராதி', {'class': 'lang-ta'}),
+                _('h2', 'Vocabulary', {'class': 'lang-en'}),
                 _(
                     'audio',
                     [
@@ -108,5 +127,3 @@ class ArticlePage(BasePage):
                 self.render_vocab_table(),
             ],
         )
-
-

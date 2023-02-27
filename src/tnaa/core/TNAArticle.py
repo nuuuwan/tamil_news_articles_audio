@@ -2,7 +2,7 @@ import os
 from dataclasses import dataclass
 
 from pydub import AudioSegment
-from utils import TIME_FORMAT_TIME, WWW, Directory, JSONFile, Log, Time
+from utils import WWW, Directory, JSONFile, Log, Time, TimeFormat
 
 from utils_future import TextToSpeech, Translator
 
@@ -18,6 +18,8 @@ DIR_TTS = os.path.join(DIR_BASE, 'tts')
 WORD_HASH_LENGTH = 6
 
 log = Log('TNAArticle')
+
+TIME_FORMAT_DISPLAY = '%a, %b %d, %Y (%I:%M %p)'
 
 
 def clean_word(x):
@@ -39,9 +41,7 @@ class TNAArticle:
     def from_hash(hash):
         url = os.path.join(URL_BASE_NEWS, f'{hash}.json')
         log.debug(f'Loading from {url}')
-        www = WWW(url)
-        www.write()
-        d = JSONFile(www.local_path).read()
+        d = JSONFile(WWW(url).download()).read()
 
         return TNAArticle(
             hash,
@@ -53,7 +53,7 @@ class TNAArticle:
 
     @property
     def time_str(self):
-        return TIME_FORMAT_TIME.stringify(Time(self.time_ut))
+        return TimeFormat(TIME_FORMAT_DISPLAY).stringify(Time(self.time_ut))
 
     @property
     def dir_article(self):

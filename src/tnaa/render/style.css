@@ -1,19 +1,19 @@
-STYLE = '''
+
 body {
     font-family: Futura;
+    font-size: 2vw;
     width: 800px;
     padding: 20px;
     margin: auto;
-
 }
 
 a {
-    color: maroon;
     text-decoration: none;
+    opacity: 0.5;
 }
 
 a:hover {
-    color: orange;
+    opacity: 1;
 }
 
 audio {
@@ -28,10 +28,6 @@ time {
 
 }
 
-ul { 
-    padding: 12px;
-}
-
 td, th {
   border: 1px solid lightgray;
   padding: 3px;
@@ -43,7 +39,6 @@ table {
 }
 
 .lang-ta {
-    color: black;
     font-size: 150%;
 }
 
@@ -53,4 +48,18 @@ table {
 }
 
 
-'''
+
+.article-header, .article-line {
+    background-color: #f8f8f8;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.article-url {
+    color: orange;
+}
+
+.article-title {
+    color: maroon;
+}

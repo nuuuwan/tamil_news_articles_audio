@@ -3,8 +3,6 @@ import os
 from utils import Directory, Log
 from utils.xmlx import _
 
-from tnaa.render.STYLE import STYLE
-
 DIR_BASE = os.path.join('/tmp', 'tnaa')
 
 log = Log('BasePage')
@@ -19,9 +17,9 @@ class BasePage:
         return _(
             'head',
             [
-                _('title', 'Tamil News Article Audio'),
+                _('title', 'Tamil News Articles'),
                 _('meta', None, dict(charset='utf-8')),
-                _('style', STYLE),
+                _('link', None, dict(rel='stylesheet', href='style.css')),
             ],
         )
 
@@ -37,8 +35,15 @@ class BasePage:
             ],
         )
 
+    @staticmethod
+    def copy_css():
+        source = 'src/tnaa/render/style.css'
+        target = os.path.join(DIR_BASE, 'style.css')
+        os.system(f'cp "{source}" "{target}"')
+
     def render_and_save(self):
         Directory(DIR_BASE).mkdir()
+        BasePage.copy_css()
 
         html = self.render_html()
         index_path = os.path.join(DIR_BASE, self.file_name_only + ".htm")

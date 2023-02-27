@@ -6,6 +6,7 @@ from tnaa.render.ArticlePage import ArticlePage
 from tnaa.render.BasePage import BasePage
 
 log = Log('IndexPage')
+MAX_ARTICLES_IN_INDEX = 100
 
 
 class IndexPage(BasePage):
@@ -23,33 +24,19 @@ class IndexPage(BasePage):
             if article.remote_exists:
                 log.info(f'{hash}: exists')
                 articles.append(article)
+                if len(articles) >= MAX_ARTICLES_IN_INDEX:
+                    break
             else:
                 log.debug(f'{hash}: does not exist. Skippiing.')
         return articles
 
     def render_article_list_item(self, article):
         ArticlePage(article.hash).render_and_save()
-
-        return _(
-            'li',
-            [
-                _(
-                    'div',
-                    [
-                        _('span', article.time_str + ' '),
-                        _(
-                            'a',
-                            article.title,
-                            dict(href=article.hash + '.htm'),
-                        ),
-                    ],
-                )
-            ],
-        )
+        return ArticlePage.render_article_header(article)
 
     def render_article_list(self):
         return _(
-            'ul',
+            'div',
             list(
                 map(
                     lambda article: self.render_article_list_item(article),
@@ -62,7 +49,7 @@ class IndexPage(BasePage):
         return _(
             'body',
             [
-                _('h1', 'Tamil News Article Audio'),
+                _('h1', 'Tamil News Articles'),
                 self.render_article_list(),
             ],
         )

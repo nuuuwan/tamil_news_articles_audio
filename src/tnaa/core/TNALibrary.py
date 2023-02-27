@@ -14,9 +14,7 @@ HASH_LENGTH = 8
 class TNALibrary:
     @cached_property
     def summary(self):
-        www = WWW(URL_SUMMARY)
-        www.write()
-        d_list = TSVFile(www.local_path).read()
+        d_list = TSVFile(WWW(URL_SUMMARY).download()).read()
         # hack - add hash
         for d in d_list:
             hash = hashx.md5(d['url'] + HASH_SALT)[:HASH_LENGTH]
