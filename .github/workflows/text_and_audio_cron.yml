@@ -2,7 +2,7 @@ name: text_and_audio_cron
 
 on:
  schedule:
-   - cron:  "40 * * * *"
+   - cron:  "40 23 * * *"
 # on: workflow_dispatch
 
 jobs:

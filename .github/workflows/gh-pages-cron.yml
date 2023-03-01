@@ -2,7 +2,7 @@ name: gh_pages_cron
 
 on:
  schedule:
-   - cron:  "20 * * * *"
+   - cron:  "20 23 * * *"
 # on: workflow_dispatch
 
 jobs:
