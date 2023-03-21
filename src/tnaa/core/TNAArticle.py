@@ -16,7 +16,7 @@ URL_BASE_TNAA = os.path.join(
 DIR_BASE = os.path.join('/tmp', 'tnaa')
 DIR_TTS = os.path.join(DIR_BASE, 'tts')
 WORD_HASH_LENGTH = 6
-
+N_REPEAT_TAMIL = 3
 log = Log('TNAArticle')
 
 TIME_FORMAT_DISPLAY = '%a, %b %d, %Y (%I:%M %p)'
@@ -139,7 +139,7 @@ class TNAArticle:
         text_file.write(data)
         log.info(f'Saved {text_file.path}')
 
-    def save_audio(self, lines, file_name):
+    def save_audio(self, lines, file_name, repeat_tamil=False):
         audio_path = os.path.join(self.dir_article, file_name)
 
         if os.path.exists(audio_path):
@@ -152,7 +152,12 @@ class TNAArticle:
         for line in lines:
             if len(line) == 0:
                 continue
-            audio_segment += tts.gen(line, 'ta')
+
+            audio_segment_ta = tts.gen(line, 'ta')
+            n_repeats = N_REPEAT_TAMIL if repeat_tamil else 1
+            for _ in range(n_repeats):
+                audio_segment += audio_segment_ta
+
             translated_line = translator.translate(line)
             audio_segment += tts.gen(translated_line, 'en')
 
@@ -163,4 +168,4 @@ class TNAArticle:
         return self.save_audio(self.lines, 'article.mp3')
 
     def save_vocab_audio(self):
-        return self.save_audio(self.words, 'vocab.mp3')
+        return self.save_audio(self.words, 'vocab.mp3', repeat_tamil=True)
