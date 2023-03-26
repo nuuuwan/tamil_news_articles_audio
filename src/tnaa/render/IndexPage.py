@@ -20,7 +20,11 @@ class IndexPage(BasePage):
         articles = []
         for summary in summary_list:
             hash = summary['hash']
-            article = TNAArticle.from_hash(hash)
+            try:
+                article = TNAArticle.from_hash(hash)
+            except BaseException:
+                log.error(f'{hash}: Error while accessing. Skipping.')
+
             if article.remote_exists:
                 log.info(f'{hash}: exists')
                 articles.append(article)
